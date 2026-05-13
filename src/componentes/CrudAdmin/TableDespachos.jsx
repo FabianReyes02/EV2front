@@ -5,10 +5,11 @@ import { FormCierreDespacho } from "./FormCierreDespacho";
 
 export const TableDespachos = () => {
   const [despachos, setDespachos] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
   const despacho = async () => {
     await axios
-      .get("http://192.168.3.20/api/v1/despachos", {
+      .get(`${API_URL}/api/v1/despachos`, {
         headers:{
               'Content-Type': 'application/json',
               'Accept': 'application/json'
@@ -17,6 +18,9 @@ export const TableDespachos = () => {
       .then((response) => {
         console.log(response.data);
         setDespachos(response.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener despachos:", error);
       });
   };
   // Llamada a la función para obtener los datos cuando el componente se monta

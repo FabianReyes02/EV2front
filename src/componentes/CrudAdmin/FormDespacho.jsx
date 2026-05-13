@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const FormDespacho = ({ venta, onClose }) => {
   const { register, handleSubmit } = useForm();
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
   const onSubmit = async (data) => {
     console.log("onSubmit ejecutado");
@@ -25,7 +26,7 @@ export const FormDespacho = ({ venta, onClose }) => {
 
     try {
       await axios.put(
-        `http://192.168.30/api/v1/ventas/${venta.idVenta}`,
+        `${API_URL}/api/v1/ventas/${venta.idVenta}`,
         jsonDataSales,
         {
           headers:{
@@ -34,7 +35,7 @@ export const FormDespacho = ({ venta, onClose }) => {
       }
         }
       );
-      await axios.post("http://192.168.320/api/v1/despachos", jsonData, {
+      await axios.post(`${API_URL}/api/v1/despachos`, jsonData, {
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -48,6 +49,12 @@ export const FormDespacho = ({ venta, onClose }) => {
       });
     } catch (error) {
       console.error("Error en la solicitud:", error);
+      Swal.fire({
+        title: "Error al crear despacho ❌",
+        text: error.response?.data?.message || "Hubo un error al crear el despacho",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     }
     onClose();
   };

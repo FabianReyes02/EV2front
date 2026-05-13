@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const FormCierreDespacho = ({ despacho, onClose }) => {
   const { register, handleSubmit } = useForm();
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
   const onSubmit = async (data) => {
     console.log("onSubmit ejecutado");
@@ -16,7 +17,7 @@ export const FormCierreDespacho = ({ despacho, onClose }) => {
 
     try {
       await axios.put(
-        `http://192.168.320/api/v1/despachos/${despacho.idDespacho}`,
+        `${API_URL}/api/v1/despachos/${despacho.idDespacho}`,
         jsonData,
         {
           headers:{
@@ -33,6 +34,12 @@ export const FormCierreDespacho = ({ despacho, onClose }) => {
       });
     } catch (error) {
       console.error("Error en la solicitud:", error);
+      Swal.fire({
+        title: "Error al modificar despacho ❌",
+        text: error.response?.data?.message || "Hubo un error al modificar el despacho",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     }
     onClose();
   };
