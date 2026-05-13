@@ -3,7 +3,7 @@ name: Build and Push to DockerHub
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   build-and-push:
